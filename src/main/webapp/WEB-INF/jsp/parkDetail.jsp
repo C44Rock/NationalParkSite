@@ -31,8 +31,16 @@
 				<c:url var="weatherImage" value="/img/weather/${dailyForecast.forecast}.png"/>
 				
 				<img src="${weatherImage}"/>
-				High: "${dailyForecast.highTemp}"<br>
-				Low: "${dailyForecast.lowTemp}"<br>
+				<c:choose>
+					<c:when test = "${degreeUnit.equals('C')}">
+						High: "${(dailyForecast.highTemp - 32) / 9 * 5}"<br>
+						Low: "${(dailyForecast.lowTemp - 32) / 9 * 5}"<br>
+					</c:when>
+					<c:otherwise>
+						High: "${dailyForecast.highTemp}"<br>
+						Low: "${dailyForecast.lowTemp}"<br>
+					</c:otherwise>
+				</c:choose>
 				Suggestions: "${dailyForecast.makeRecommendation()}"<br>
 				</td>
 			</tr>

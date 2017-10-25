@@ -57,6 +57,9 @@ public class DailyWeather {
 			rec = "Pack sunblock. ";
 		}
 		
+		//create seperate celsius temperature
+		
+		
 		if (highTemp > 75) {
 			rec += "Bring an extra gallon of water. ";
 		}

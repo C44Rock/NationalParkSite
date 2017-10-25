@@ -45,7 +45,8 @@ public class ParkGeekController {
 		
 		if(model.get("degreeUnit").equals("C")) {
 			for(DailyWeather dailyForecast : weeklyForecast) {
-			
+				dailyForecast.setHighTemp((dailyForecast.getHighTemp() - 32) * 5 / 9);
+				dailyForecast.setLowTemp((dailyForecast.getLowTemp() - 32) * 5 / 9);
 			}
 		}
 		
