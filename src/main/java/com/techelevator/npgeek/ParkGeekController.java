@@ -55,5 +55,29 @@ public class ParkGeekController {
 		
 		return "parkDetail";
 	}
+	
+	@RequestMapping(path ="/surveyInput", method = RequestMethod.GET)
+	public String displaySurveyPage() {
+		
+		return "surveyInput";
+	}
+	
+	@RequestMapping(path ="/surveyOutput", method = RequestMethod.POST)
+	public String surveyInfoPage(@RequestParam String parkCode,
+								@RequestParam String email,
+								@RequestParam String state,
+								@RequestParam String activity) {
+		
+		dao.saveSurveyResults(parkCode, email, state, activity);
+		return "redirect:/surveyResults";
+	}
+	
+	@RequestMapping(path ="/surveyResults", method = RequestMethod.GET)
+	public String displaySurveyResultsPage(HttpServletRequest request) {
+		
+		request.setAttribute("popularParks", dao.getSurveyCountByPark());
+		
+		return "surveyResults";
+	}
 
 }

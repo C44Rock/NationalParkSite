@@ -1,12 +1,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <c:import url="/WEB-INF/jsp/header.jsp" />
 
 <section>
 	<c:url var="imageUrl" value="/img/parks/${param.parkCode.toLowerCase()}.jpg"/>
 	
-    <a href="${detailPage}"><img src="${imageUrl}" /></a>
-    	<h1>${park.name}</h1>
+    <a href="${detailPage}"><img style="width:100%" src="${imageUrl}" /></a>
+    
+    	<h1>${thisPark.name}</h1>
  
 	<p>${thisPark.summary}</p>
 	<p>Location: ${thisPark.location}</p>
@@ -24,30 +26,33 @@
 </section>
 
 <section>
-	<c:forEach var="dailyForecast" items="${weeklyForecast}">
-		<table>
+	<table>
 			<tr>
+	<c:forEach var="dailyForecast" items="${weeklyForecast}">
+		
 				<td>
 				<c:url var="weatherImage" value="/img/weather/${dailyForecast.forecast}.png"/>
 				
-				<img src="${weatherImage}"/>
+				<img style="width:40%" src="${weatherImage}"/><br>
 				<c:choose>
 					<c:when test = "${degreeUnit.equals('C')}">
-						High: "${(dailyForecast.highTemp - 32) / 9 * 5}"<br>
-						Low: "${(dailyForecast.lowTemp - 32) / 9 * 5}"<br>
+						High: <fmt:formatNumber type="number" pattern="##.#" value="${(dailyForecast.highTemp - 32) / 9 * 5}"/><br>
+						Low: <fmt:formatNumber type="number" pattern="##.#" value="${(dailyForecast.lowTemp - 32) / 9 * 5}"/><br>
 					</c:when>
 					<c:otherwise>
-						High: "${dailyForecast.highTemp}"<br>
-						Low: "${dailyForecast.lowTemp}"<br>
+						High: ${dailyForecast.highTemp}<br>
+						Low: ${dailyForecast.lowTemp}<br>
 					</c:otherwise>
 				</c:choose>
-				Suggestions: "${dailyForecast.makeRecommendation()}"<br>
+				Suggestions: ${dailyForecast.makeRecommendation()}<br>
 				</td>
-			</tr>
-		</table>
-	
 	</c:forEach>
+		</tr>
+		</table>
 </section>
+
+<hr>  
+<br>
 
 
 </body>

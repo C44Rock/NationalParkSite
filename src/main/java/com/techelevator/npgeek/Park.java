@@ -17,6 +17,9 @@ public class Park {
 	private String quoteSource;
 	private String entryFee;
 	private String speciesCount;
+	private int surveyCount;
+	
+	
 	
 	
 	public String getImage() {
@@ -134,6 +137,14 @@ public class Park {
 
 	public void setSpeciesCount(String speciesCount) {
 		this.speciesCount = speciesCount;
+	}
+
+	public int getSurveyCount() {
+		return surveyCount;
+	}
+
+	public void setSurveyCount(int surveyCount) {
+		this.surveyCount = surveyCount;
 	}
 	
 }

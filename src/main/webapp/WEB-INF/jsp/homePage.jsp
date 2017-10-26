@@ -13,18 +13,24 @@
 <c:forEach var="park" items="${parkList}">
 
 <section>
-	<c:url var="imageUrl" value="/img/parks/${park.image}.jpg"/>
+<table>
+<tr>
+	<td><c:url var="imageUrl" value="/img/parks/${park.image}.jpg"/>
 	<c:url var="detailPage" value="/parkDetail">
 		<c:param value = "${park.parkCode}" name = "parkCode"/>
 	</c:url>
 	
-    <a href="${detailPage}"><img src="${imageUrl}" /></a>
-    	<h1>${park.name}</h1>
+    <a href="${detailPage}"><img src="${imageUrl}" /></a></td>
+    <td>	<h1>${park.name}</h1>
     <h3>${park.location}</h3>
-	<p>${park.summary}</p>
+	<p>${park.summary}</p></td>
+</tr>
+</table>
 </section>
 
 </c:forEach>
 
+<hr>  
+<br>
 </body>
 </html>

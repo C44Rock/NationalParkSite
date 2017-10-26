@@ -46,21 +46,21 @@ public class ParksJDBC {
 		
 		Park park = new Park();
 		if(results.next()) {
-		park.setParkCode(results.getString("parkCode"));
-		park.setName(results.getString("parkName"));
-		park.setLocation(results.getString("state"));
-		park.setSummary(results.getString("parkDescription"));
-		park.setSize(results.getString("acreage"));
-		park.setElevation(results.getString("elevationInFeet"));
-		park.setTrailLength(results.getString("milesOfTrail"));
-		park.setCampsiteNumber(results.getString("numberOfCampsites"));
-		park.setClimate(results.getString("climate"));
-		park.setYearFounded(results.getString("yearFounded"));
-		park.setVisitorCount(results.getString("annualVisitorCount"));
-		park.setQuote(results.getString("inspirationalQuote"));
-		park.setQuoteSource(results.getString("inspirationalQuoteSource"));
-		park.setEntryFee(results.getString("entryFee"));
-		park.setSpeciesCount(results.getString("numberOfAnimalSpecies"));
+			park.setParkCode(results.getString("parkCode"));
+			park.setName(results.getString("parkName"));
+			park.setLocation(results.getString("state"));
+			park.setSummary(results.getString("parkDescription"));
+			park.setSize(results.getString("acreage"));
+			park.setElevation(results.getString("elevationInFeet"));
+			park.setTrailLength(results.getString("milesOfTrail"));
+			park.setCampsiteNumber(results.getString("numberOfCampsites"));
+			park.setClimate(results.getString("climate"));
+			park.setYearFounded(results.getString("yearFounded"));
+			park.setVisitorCount(results.getString("annualVisitorCount"));
+			park.setQuote(results.getString("inspirationalQuote"));
+			park.setQuoteSource(results.getString("inspirationalQuoteSource"));
+			park.setEntryFee(results.getString("entryFee"));
+			park.setSpeciesCount(results.getString("numberOfAnimalSpecies"));
 		}
 		return park;
 	}
@@ -86,6 +86,42 @@ public class ParksJDBC {
 		
 	}
 	
+	public void saveSurveyResults(String parkCode, String email, String state, String activity) {
+		String sqlInsertSurvey = "INSERT INTO survey_result (surveyId, parkCode, emailAddress, state, activityLevel)" +
+								"VALUES (?, ?, ?, ?, ?)";
+		
+		jdbcTemplate.update(sqlInsertSurvey, getNextSurveyId(), parkCode, email, state, activity);
+		
+	}
 
+	private int getNextSurveyId() {
+		SqlRowSet nextId = jdbcTemplate.queryForRowSet("SELECT nextval('seq_surveyId')");
+		if(nextId.next()) {
+			return nextId.getInt(1);
+		} else {
+			throw new RuntimeException("Something went wrong while getting an id for the new survey");
+		}
+	}
+	
+	public List<Park> getSurveyCountByPark() {
+		List<Park> popularParks = new ArrayList<>();
+		
+		String sqlCountSurveys = "SELECT survey_result.parkCode, park.parkName, COUNT(*) AS surveyCount " +
+								"FROM survey_result JOIN park ON survey_result.parkCode = park.parkCode " +
+								"GROUP BY survey_result.parkCode, park.parkName " +
+								"ORDER BY COUNT(*) DESC, survey_result.parkCode ";
+		
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlCountSurveys);
+		
+		while (results.next()) {
+			Park park = new Park();
+			
+			park.setParkCode(results.getString("parkCode"));
+			park.setName(results.getString("parkName"));
+			park.setSurveyCount(results.getInt("surveyCount"));
+			popularParks.add(park);
+		}
+		return popularParks;
+	}
 	
 }
